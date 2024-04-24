@@ -1,42 +1,42 @@
 <?php
 
-namespace Platron\AtolV5\tests\integration;
+namespace Platron\FirstOfdV5\tests\integration;
 
-use Platron\AtolV5\clients\PostClient;
-use Platron\AtolV5\data_objects\AdditionalUserProps;
-use Platron\AtolV5\data_objects\AgentInfo;
-use Platron\AtolV5\data_objects\Client;
-use Platron\AtolV5\data_objects\Company;
-use Platron\AtolV5\data_objects\Item;
-use Platron\AtolV5\data_objects\MarkCode;
-use Platron\AtolV5\data_objects\MarkQuantity;
-use Platron\AtolV5\data_objects\MoneyTransferOperator;
-use Platron\AtolV5\data_objects\OperatingCheckProps;
-use Platron\AtolV5\data_objects\PayingAgent;
-use Platron\AtolV5\data_objects\Payment;
-use Platron\AtolV5\data_objects\Receipt;
-use Platron\AtolV5\data_objects\ReceivePaymentsOperator;
-use Platron\AtolV5\data_objects\SectoralBase;
-use Platron\AtolV5\data_objects\SectoralCheckProps;
-use Platron\AtolV5\data_objects\SectoralItemProps;
-use Platron\AtolV5\data_objects\Supplier;
-use Platron\AtolV5\data_objects\Vat;
-use Platron\AtolV5\handbooks\AgentTypes;
-use Platron\AtolV5\handbooks\MarkCodeTypes;
-use Platron\AtolV5\handbooks\Measures;
-use Platron\AtolV5\handbooks\PaymentMethods;
-use Platron\AtolV5\handbooks\PaymentObjects;
-use Platron\AtolV5\handbooks\PaymentTypes;
-use Platron\AtolV5\handbooks\ReceiptOperationTypes;
-use Platron\AtolV5\handbooks\SnoTypes;
-use Platron\AtolV5\handbooks\Vates;
-use Platron\AtolV5\SdkException;
-use Platron\AtolV5\services\CreateReceiptRequest;
-use Platron\AtolV5\services\CreateReceiptResponse;
-use Platron\AtolV5\services\GetStatusRequest;
-use Platron\AtolV5\services\GetStatusResponse;
-use Platron\AtolV5\services\GetTokenRequest;
-use Platron\AtolV5\services\GetTokenResponse;
+use Platron\FirstOfdV5\clients\PostClient;
+use Platron\FirstOfdV5\data_objects\AdditionalUserProps;
+use Platron\FirstOfdV5\data_objects\AgentInfo;
+use Platron\FirstOfdV5\data_objects\Client;
+use Platron\FirstOfdV5\data_objects\Company;
+use Platron\FirstOfdV5\data_objects\Item;
+use Platron\FirstOfdV5\data_objects\MarkCode;
+use Platron\FirstOfdV5\data_objects\MarkQuantity;
+use Platron\FirstOfdV5\data_objects\MoneyTransferOperator;
+use Platron\FirstOfdV5\data_objects\OperatingCheckProps;
+use Platron\FirstOfdV5\data_objects\PayingAgent;
+use Platron\FirstOfdV5\data_objects\Payment;
+use Platron\FirstOfdV5\data_objects\Receipt;
+use Platron\FirstOfdV5\data_objects\ReceivePaymentsOperator;
+use Platron\FirstOfdV5\data_objects\SectoralBase;
+use Platron\FirstOfdV5\data_objects\SectoralCheckProps;
+use Platron\FirstOfdV5\data_objects\SectoralItemProps;
+use Platron\FirstOfdV5\data_objects\Supplier;
+use Platron\FirstOfdV5\data_objects\Vat;
+use Platron\FirstOfdV5\handbooks\AgentTypes;
+use Platron\FirstOfdV5\handbooks\MarkCodeTypes;
+use Platron\FirstOfdV5\handbooks\Measures;
+use Platron\FirstOfdV5\handbooks\PaymentMethods;
+use Platron\FirstOfdV5\handbooks\PaymentObjects;
+use Platron\FirstOfdV5\handbooks\PaymentTypes;
+use Platron\FirstOfdV5\handbooks\ReceiptOperationTypes;
+use Platron\FirstOfdV5\handbooks\SnoTypes;
+use Platron\FirstOfdV5\handbooks\Vates;
+use Platron\FirstOfdV5\SdkException;
+use Platron\FirstOfdV5\services\CreateReceiptRequest;
+use Platron\FirstOfdV5\services\CreateReceiptResponse;
+use Platron\FirstOfdV5\services\GetStatusRequest;
+use Platron\FirstOfdV5\services\GetStatusResponse;
+use Platron\FirstOfdV5\services\GetTokenRequest;
+use Platron\FirstOfdV5\services\GetTokenResponse;
 
 class CreateReceiptTest extends IntegrationTestBase
 {
@@ -153,7 +153,7 @@ class CreateReceiptTest extends IntegrationTestBase
 	{
 		$supplier = $this->createSupplier();
 		$agentInfo = new AgentInfo(
-			new AgentTypes(AgentTypes::PAYING_AGENT),
+			new AgentTypes(AgentTypes::ANOTHER),
 			$supplier
 		);
 
@@ -181,7 +181,7 @@ class CreateReceiptTest extends IntegrationTestBase
 			$vat,
 			new Measures(Measures::ONE),
 			new PaymentMethods(PaymentMethods::FULL_PAYMENT),
-			new PaymentObjects(PaymentObjects::EXCISE_WITH_MARK)
+			new PaymentObjects(PaymentObjects::EXCISE)
 		);
 		$agentInfo = $this->createAgentInfo();
 		$item->addAgentInfo($agentInfo);
@@ -192,7 +192,6 @@ class CreateReceiptTest extends IntegrationTestBase
 		$item->addMarkQuantity($markQuantity);
 
 		$code = "MDEwNDYwNzQyODY3OTA5MDIxNmVKSWpvV0g1NERkVSA5MWZmZDAgOTJzejZrU1BpckFwZk1CZnR2TGJvRTFkbFdDLzU4aEV4UVVxdjdCQmtabWs0PQ==";
-
 		$markCode = new MarkCode(
 			new MarkCodeTypes(MarkCodeTypes::GS1M),
 			$code);
@@ -201,8 +200,6 @@ class CreateReceiptTest extends IntegrationTestBase
 
 		$sectoral_item_props = $this->createSectoralItemProps();
 		$item->addSectoralItemProps([$sectoral_item_props]);
-		$item->addPaymentMethod(new PaymentMethods(PaymentMethods::FULL_PAYMENT));
-		$item->addPaymentObject(new PaymentObjects(PaymentObjects::EXCISE_WITH_MARK));
 		$item->addUserData('Test user data');
 		$item->addExcise(5.64);
 		$item->addCountryCode("643");
@@ -216,8 +213,8 @@ class CreateReceiptTest extends IntegrationTestBase
 	private function createMarkQuantity()
 	{
 		$markQuantity = new MarkQuantity();
-		$markQuantity->addNumerator(4);
-		$markQuantity->addDenominator(7);
+		$markQuantity->addNumerator(1);
+		$markQuantity->addDenominator(2);
 		return $markQuantity;
 	}
 

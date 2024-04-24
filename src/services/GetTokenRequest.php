@@ -1,6 +1,6 @@
 <?php
 
-namespace Platron\AtolV5\services;
+namespace Platron\FirstOfdV5\services;
 
 class GetTokenRequest extends BaseServiceRequest
 {

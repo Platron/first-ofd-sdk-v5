@@ -1,6 +1,6 @@
 {
-  "name": "payprocessing/atol-sdk-api-v5",
-  "description": "Atol.online SDK Version 5",
+  "name": "payprocessing/first-ofd-sdk-v5",
+  "description": "First Ofd SDK Atol Version 5",
   "require": {
     "php": ">=7.4",
     "psr/log": "^1.0.2",
@@ -12,8 +12,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Platron\\AtolV5\\": "src",
-      "Platron\\AtolV5\\tests\\": "tests"
+      "Platron\\FirstOfdV5\\": "src",
+      "Platron\\FirstOfdV5\\tests\\": "tests"
     }
   }
 }

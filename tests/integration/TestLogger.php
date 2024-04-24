@@ -1,6 +1,6 @@
 <?php
 
-namespace Platron\AtolV5\tests\integration;
+namespace Platron\FirstOfdV5\tests\integration;
 
 use Psr\Log\LoggerInterface;
 

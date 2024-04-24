@@ -1,6 +1,6 @@
 <?php
 
-namespace Platron\AtolV5\services;
+namespace Platron\FirstOfdV5\services;
 
 class GetStatusRequest extends BaseServiceRequest
 {
@@ -17,7 +17,7 @@ class GetStatusRequest extends BaseServiceRequest
 	 */
 	public function getRequestUrl()
 	{
-		return $this->getBaseUrl() . $this->groupCode . '/report/' . $this->uuId;
+		return $this->getBaseUrl() . 'api/external/possystem/v5/' . $this->groupCode . '/report/' . $this->uuId;
 	}
 
 	/**

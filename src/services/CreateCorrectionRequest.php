@@ -1,9 +1,9 @@
 <?php
 
-namespace Platron\AtolV5\services;
+namespace Platron\FirstOfdV5\services;
 
-use Platron\AtolV5\data_objects\Correction;
-use Platron\AtolV5\data_objects\Service;
+use Platron\FirstOfdV5\data_objects\Correction;
+use Platron\FirstOfdV5\data_objects\Service;
 
 class CreateCorrectionRequest extends BaseServiceRequest
 {
@@ -39,7 +39,7 @@ class CreateCorrectionRequest extends BaseServiceRequest
 	 */
 	public function getRequestUrl()
 	{
-		return $this->getBaseUrl() . $this->groupCode . '/' . $this->correction->getOperationType();
+		return $this->getBaseUrl() . 'api/external/possystem/v5/' . $this->groupCode . '/' . $this->correction->getOperationType();
 	}
 
 	/**

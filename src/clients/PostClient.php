@@ -1,9 +1,9 @@
 <?php
 
-namespace Platron\AtolV5\clients;
+namespace Platron\FirstOfdV5\clients;
 
-use Platron\AtolV5\SdkException;
-use Platron\AtolV5\services\BaseServiceRequest;
+use Platron\FirstOfdV5\SdkException;
+use Platron\FirstOfdV5\services\BaseServiceRequest;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use stdClass;
@@ -76,7 +76,7 @@ class PostClient implements iClient
 
 		$decodedResponse = json_decode($response);
 		if (empty($decodedResponse)) {
-			throw new SdkException('Atol error. Empty response or not json response');
+			throw new SdkException('First Ofd error. Empty response or not json response');
 		}
 
 		return $decodedResponse;

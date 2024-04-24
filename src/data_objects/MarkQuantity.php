@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Platron\AtolV5\data_objects;
+namespace Platron\FirstOfdV5\data_objects;
 
 class MarkQuantity extends BaseDataObject
 {

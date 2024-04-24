@@ -1,10 +1,10 @@
 <?php
 
-namespace Platron\AtolV5\data_objects;
+namespace Platron\FirstOfdV5\data_objects;
 
-use Platron\AtolV5\handbooks\PaymentMethods;
-use Platron\AtolV5\handbooks\PaymentObjects;
-use Platron\AtolV5\handbooks\Measures;
+use Platron\FirstOfdV5\handbooks\PaymentMethods;
+use Platron\FirstOfdV5\handbooks\PaymentObjects;
+use Platron\FirstOfdV5\handbooks\Measures;
 
 
 class Item extends BaseDataObject

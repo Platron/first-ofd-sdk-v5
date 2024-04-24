@@ -1,8 +1,8 @@
 <?php
 
-namespace Platron\AtolV5\data_objects;
+namespace Platron\FirstOfdV5\data_objects;
 
-use Platron\AtolV5\handbooks\ReceiptOperationTypes;
+use Platron\FirstOfdV5\handbooks\ReceiptOperationTypes;
 
 class Receipt extends BaseDataObject
 {

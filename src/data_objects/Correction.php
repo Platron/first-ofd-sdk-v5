@@ -1,11 +1,13 @@
 <?php
 
-namespace Platron\AtolV5\data_objects;
+namespace Platron\FirstOfdV5\data_objects;
 
-use Platron\AtolV5\handbooks\CorrectionOperationTypes;
+use Platron\FirstOfdV5\handbooks\CorrectionOperationTypes;
 
 class Correction extends BaseDataObject
 {
+	/** @var Client */
+	protected $client;
 	/** @var Company */
 	protected $company;
 	/** @var CorrectionInfo */
@@ -22,15 +24,17 @@ class Correction extends BaseDataObject
 	/**
 	 * Correction constructor.
 	 * @param CorrectionOperationTypes $operationType
+	 * @param Client $client
 	 * @param Company $company
 	 * @param CorrectionInfo $correctionInfo
 	 * @param Payment $payment
 	 * @param Vat $vat
 	 * @param Item[] $items
 	 */
-	public function __construct(CorrectionOperationTypes $operationType, Company $company, CorrectionInfo $correctionInfo, Payment $payment, Vat $vat, $items)
+	public function __construct(CorrectionOperationTypes $operationType, Client $client, Company $company, CorrectionInfo $correctionInfo, Payment $payment, Vat $vat, $items)
 	{
 		$this->operationType = $operationType->getValue();
+		$this->client = $client;
 		$this->company = $company;
 		$this->correction_info = $correctionInfo;
 		$this->addPayment($payment);

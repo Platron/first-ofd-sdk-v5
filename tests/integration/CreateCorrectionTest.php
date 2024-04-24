@@ -1,39 +1,40 @@
 <?php
 
-namespace Platron\AtolV5\tests\integration;
+namespace Platron\FirstOfdV5\tests\integration;
 
-use Platron\AtolV5\clients\PostClient;
-use Platron\AtolV5\data_objects\AgentInfo;
-use Platron\AtolV5\data_objects\Company;
-use Platron\AtolV5\data_objects\Correction;
-use Platron\AtolV5\data_objects\CorrectionInfo;
-use Platron\AtolV5\data_objects\Item;
-use Platron\AtolV5\data_objects\MarkCode;
-use Platron\AtolV5\data_objects\MarkQuantity;
-use Platron\AtolV5\data_objects\MoneyTransferOperator;
-use Platron\AtolV5\data_objects\PayingAgent;
-use Platron\AtolV5\data_objects\Payment;
-use Platron\AtolV5\data_objects\ReceivePaymentsOperator;
-use Platron\AtolV5\data_objects\SectoralItemProps;
-use Platron\AtolV5\data_objects\Supplier;
-use Platron\AtolV5\data_objects\Vat;
-use Platron\AtolV5\handbooks\AgentTypes;
-use Platron\AtolV5\handbooks\CorrectionOperationTypes;
-use Platron\AtolV5\handbooks\CorrectionTypes;
-use Platron\AtolV5\handbooks\MarkCodeTypes;
-use Platron\AtolV5\handbooks\Measures;
-use Platron\AtolV5\handbooks\PaymentMethods;
-use Platron\AtolV5\handbooks\PaymentObjects;
-use Platron\AtolV5\handbooks\PaymentTypes;
-use Platron\AtolV5\handbooks\SnoTypes;
-use Platron\AtolV5\handbooks\Vates;
-use Platron\AtolV5\SdkException;
-use Platron\AtolV5\services\CreateCorrectionRequest;
-use Platron\AtolV5\services\CreateReceiptResponse;
-use Platron\AtolV5\services\GetStatusRequest;
-use Platron\AtolV5\services\GetStatusResponse;
-use Platron\AtolV5\services\GetTokenRequest;
-use Platron\AtolV5\services\GetTokenResponse;
+use Platron\FirstOfdV5\clients\PostClient;
+use Platron\FirstOfdV5\data_objects\AgentInfo;
+use Platron\FirstOfdV5\data_objects\Client;
+use Platron\FirstOfdV5\data_objects\Company;
+use Platron\FirstOfdV5\data_objects\Correction;
+use Platron\FirstOfdV5\data_objects\CorrectionInfo;
+use Platron\FirstOfdV5\data_objects\Item;
+use Platron\FirstOfdV5\data_objects\MarkCode;
+use Platron\FirstOfdV5\data_objects\MarkQuantity;
+use Platron\FirstOfdV5\data_objects\MoneyTransferOperator;
+use Platron\FirstOfdV5\data_objects\PayingAgent;
+use Platron\FirstOfdV5\data_objects\Payment;
+use Platron\FirstOfdV5\data_objects\ReceivePaymentsOperator;
+use Platron\FirstOfdV5\data_objects\SectoralItemProps;
+use Platron\FirstOfdV5\data_objects\Supplier;
+use Platron\FirstOfdV5\data_objects\Vat;
+use Platron\FirstOfdV5\handbooks\AgentTypes;
+use Platron\FirstOfdV5\handbooks\CorrectionOperationTypes;
+use Platron\FirstOfdV5\handbooks\CorrectionTypes;
+use Platron\FirstOfdV5\handbooks\MarkCodeTypes;
+use Platron\FirstOfdV5\handbooks\Measures;
+use Platron\FirstOfdV5\handbooks\PaymentMethods;
+use Platron\FirstOfdV5\handbooks\PaymentObjects;
+use Platron\FirstOfdV5\handbooks\PaymentTypes;
+use Platron\FirstOfdV5\handbooks\SnoTypes;
+use Platron\FirstOfdV5\handbooks\Vates;
+use Platron\FirstOfdV5\SdkException;
+use Platron\FirstOfdV5\services\CreateCorrectionRequest;
+use Platron\FirstOfdV5\services\CreateReceiptResponse;
+use Platron\FirstOfdV5\services\GetStatusRequest;
+use Platron\FirstOfdV5\services\GetStatusResponse;
+use Platron\FirstOfdV5\services\GetTokenRequest;
+use Platron\FirstOfdV5\services\GetTokenResponse;
 
 class CreateCorrectionTest extends IntegrationTestBase
 {
@@ -95,6 +96,22 @@ class CreateCorrectionTest extends IntegrationTestBase
 	}
 
 	/**
+	 * @return Client
+	 */
+	private function createCustomer()
+	{
+		$customer = new Client();
+		$customer->addEmail('test@test.ru');
+		$customer->addPhone('79050000000');
+		$customer->addBirthdate("18.11.1990");
+		$customer->addCitizenship("643");
+		$customer->addDocumentCode("21");
+		$customer->addDocumentData("4507 443564");
+		$customer->addAddress("г.Москва, Ленинский проспект д.1 кв 43");
+		return $customer;
+	}
+
+	/**
 	 * @return Company
 	 */
 	private function createCompany()
@@ -116,7 +133,7 @@ class CreateCorrectionTest extends IntegrationTestBase
 		$correctionInfo = new CorrectionInfo(
 			new CorrectionTypes(CorrectionTypes::SELF),
 			new \DateTime(),
-			'Test base number'
+			null
 		);
 		return $correctionInfo;
 	}
@@ -156,18 +173,22 @@ class CreateCorrectionTest extends IntegrationTestBase
 			$vat,
 			new Measures(Measures::ONE),
 			new PaymentMethods(PaymentMethods::FULL_PAYMENT),
-			new PaymentObjects(PaymentObjects::EXCISE_WITH_MARK)
+			new PaymentObjects(PaymentObjects::EXCISE)
 		);
 		$agentInfo = $this->createAgentInfo();
 		$item->addAgentInfo($agentInfo);
+
 		$item->addMarkProcessingMode(0);
+
 		$markQuantity = $this->createMarkQuantity();
 		$item->addMarkQuantity($markQuantity);
+
 		$code = "MDEwNDYwNzQyODY3OTA5MDIxNmVKSWpvV0g1NERkVSA5MWZmZDAgOTJzejZrU1BpckFwZk1CZnR2TGJvRTFkbFdDLzU4aEV4UVVxdjdCQmtabWs0PQ==";
 		$markCode = new MarkCode(
 			new MarkCodeTypes(MarkCodeTypes::GS1M),
 			$code);
 		$item->addMarkCode($markCode);
+
 		$sectoral_item_props = $this->createSectoralItemProps();
 		$item->addSectoralItemProps([$sectoral_item_props]);
 		$item->addUserData('Test user data');
@@ -196,7 +217,7 @@ class CreateCorrectionTest extends IntegrationTestBase
 	{
 		$supplier = $this->createSupplier();
 		$agentInfo = new AgentInfo(
-			new AgentTypes(AgentTypes::PAYING_AGENT),
+			new AgentTypes(AgentTypes::ANOTHER),
 			$supplier
 		);
 		$payingAgent = $this->createPayingAgent();
@@ -225,8 +246,8 @@ class CreateCorrectionTest extends IntegrationTestBase
 	private function createMarkQuantity()
 	{
 		$markQuantity = new MarkQuantity();
-		$markQuantity->addNumerator(4);
-		$markQuantity->addDenominator(7);
+		$markQuantity->addNumerator(1);
+		$markQuantity->addDenominator(2);
 		return $markQuantity;
 	}
 
@@ -269,6 +290,7 @@ class CreateCorrectionTest extends IntegrationTestBase
 	 */
 	private function createCorrection()
 	{
+		$customer = $this->createCustomer();
 		$company = $this->createCompany();
 		$correctionInfo = $this->createCorrectionInfo();
 		$payment = $this->createPayment();
@@ -276,6 +298,7 @@ class CreateCorrectionTest extends IntegrationTestBase
 		$item = $this->createItem();
 		$correction = new Correction(
 			new CorrectionOperationTypes(CorrectionOperationTypes::BUY_CORRECTION),
+			$customer,
 			$company,
 			$correctionInfo,
 			$payment,

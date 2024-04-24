@@ -1,12 +1,14 @@
 <?php
 
-namespace Platron\AtolV5\services;
+namespace Platron\FirstOfdV5\services;
 
 use stdClass;
 
 abstract class BaseServiceResponse
 {
 
+	/** @var string uuid */
+	protected $errorId;
 	/** @var int */
 	protected $errorCode;
 
@@ -36,7 +38,7 @@ abstract class BaseServiceResponse
 	 */
 	private function hasStandardError(stdClass $response)
 	{
-		return !empty($response->error->code);
+		return !empty($response->error->error_id);
 	}
 
 	/**
@@ -44,6 +46,7 @@ abstract class BaseServiceResponse
 	 */
 	private function setStandardError(stdClass $response)
 	{
+		$this->errorId = $response->error->error_id;
 		$this->errorCode = $response->error->code;
 		$this->errorDescription = 'Error type ' . $response->error->type . ' error code ' . $response->error->code . ' ' . $response->error->text;
 		if (!empty($response->error->error_id)) {
@@ -57,7 +60,7 @@ abstract class BaseServiceResponse
 	 */
 	public function isValid()
 	{
-		if (!empty($this->errorCode)) {
+		if (!empty($this->errorId)) {
 			return false;
 		} else {
 			return true;
